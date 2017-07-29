@@ -24,30 +24,34 @@ def main():
 				RegexHandler('^제거$', remove_feed),
 			],
 			Generate: [
-				RegexHandler('^학부공지사항$', notice),
+				RegexHandler('^학부공지사항$', notice, pass_user_data=True),
 				RegexHandler('^강의게시판$', semester),
 				RegexHandler('^이전으로$', start)
 			],
 			Semester: [
 				RegexHandler('^1학기$', lecture_1),
-				RegexHandler('^여름학기$', lecture_s),
-				RegexHandler('^2학기$', lecture_2)
+				RegexHandler('^여름학기$', under_s),
+				RegexHandler('^2학기$', lecture_2),
+				RegexHandler('^이전으로$', generate_feed)
 			],
 			Lecture_1: [
-				RegexHandler('^학부 1학년$', undergrad_1_1),
-				RegexHandler('^학부 2학년$', undergrad_1_2),
-				RegexHandler('^학부 3학년$', undergrad_1_3),
-				RegexHandler('^학부 4학년$', undergrad_1_4),
+				RegexHandler('^학부 1학년$', under_1_1),
+				RegexHandler('^학부 2학년$', under_1_2),
+				RegexHandler('^학부 3학년$', under_1_3),
+				RegexHandler('^학부 4학년$', under_1_4),
 				RegexHandler('^석사/박사과정$', grad_1),
 				RegexHandler('^이전으로$', lecture_1)
 			],
 			Lecture_2: [
-				RegexHandler('^학부 1학년$', undergrad_2_1),
-				RegexHandler('^학부 2학년$', undergrad_2_2),
-				RegexHandler('^학부 3학년$', undergrad_2_3),
-				RegexHandler('^학부 4학년$', undergrad_2_4),
+				RegexHandler('^학부 1학년$', under_2_1),
+				RegexHandler('^학부 2학년$', under_2_2),
+				RegexHandler('^학부 3학년$', under_2_3),
+				RegexHandler('^학부 4학년$', under_2_4),
 				RegexHandler('^석사/박사과정$', grad_2),
 				RegexHandler('^이전으로$', lecture_2)
+			],
+			Subscribe: [
+				MessageHandler(Filters.text, subscribe, pass_user_data=True)
 			]
 		},
 		fallbacks=[RegexHandler('^Done$', done)]
