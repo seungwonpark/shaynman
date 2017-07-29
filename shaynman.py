@@ -6,11 +6,6 @@ from functions import *
 import os
 bot_token = os.environ["bot_token"]
 
-# Enable logging
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-					level=logging.INFO)
-
-logger = logging.getLogger(__name__)
 
 def main():
 	updater = Updater(bot_token)
@@ -19,9 +14,10 @@ def main():
 		entry_points=[CommandHandler('start', start)],
 		states={
 			MainMenu: [
-				RegexHandler('^생성$', generate_feed),
-				RegexHandler('^리스트$', show_list, pass_user_data=True),
-				RegexHandler('^제거$', remove_feed),
+				RegexHandler('^새로운 구독 설정$', generate_feed),
+				RegexHandler('^내 구독 리스트$', show_list, pass_user_data=True),
+				RegexHandler('^구독 취소$', remove_feed_select, pass_user_data=True),
+				RegexHandler('^봇 정보, 만든이$', credits)
 			],
 			Generate: [
 				RegexHandler('^학부공지사항$', notice, pass_user_data=True),
@@ -32,29 +28,35 @@ def main():
 				RegexHandler('^1학기$', lecture_1),
 				RegexHandler('^여름학기$', under_s),
 				RegexHandler('^2학기$', lecture_2),
-				RegexHandler('^이전으로$', generate_feed)
+				RegexHandler('^이전으로$', generate_feed),
+				RegexHandler('^처음으로$', start)
 			],
 			Lecture_1: [
-				RegexHandler('^학부 1학년$', under_1_1),
-				RegexHandler('^학부 2학년$', under_1_2),
-				RegexHandler('^학부 3학년$', under_1_3),
-				RegexHandler('^학부 4학년$', under_1_4),
+				RegexHandler('^1학년$', under_1_1),
+				RegexHandler('^2학년$', under_1_2),
+				RegexHandler('^3학년$', under_1_3),
+				RegexHandler('^4학년$', under_1_4),
 				RegexHandler('^석사/박사과정$', grad_1),
-				RegexHandler('^이전으로$', lecture_1)
+				RegexHandler('^이전으로$', lecture_1),
+				RegexHandler('^처음으로$', start)
 			],
 			Lecture_2: [
-				RegexHandler('^학부 1학년$', under_2_1),
-				RegexHandler('^학부 2학년$', under_2_2),
-				RegexHandler('^학부 3학년$', under_2_3),
-				RegexHandler('^학부 4학년$', under_2_4),
+				RegexHandler('^1학년$', under_2_1),
+				RegexHandler('^2학년$', under_2_2),
+				RegexHandler('^3학년$', under_2_3),
+				RegexHandler('^4학년$', under_2_4),
 				RegexHandler('^석사/박사과정$', grad_2),
-				RegexHandler('^이전으로$', lecture_2)
+				RegexHandler('^이전으로$', lecture_2),
+				RegexHandler('^처음으로$', start)
 			],
 			Subscribe: [
 				MessageHandler(Filters.text, subscribe, pass_user_data=True)
+			],
+			Remove: [
+				MessageHandler(Filters.text, remove_feed_remove, pass_user_data=True)
 			]
 		},
-		fallbacks=[RegexHandler('^Done$', done)]
+		fallbacks=[RegexHandler('^이제 볼 일을 다 봤어요!$', done)]
 	)
 
 	dp.add_handler(conv_handler)

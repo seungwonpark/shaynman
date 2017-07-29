@@ -1,9 +1,14 @@
 from lecturelists import *
+
+''' 
+Warning! 
+The following keyboard texts must be identical with shaynman.py's RegexHandler-thing.
+'''
 keyboard_main = [
-	['생성'],
-	['리스트'],
-	['제거'],
-	['이제 볼 일을 다 봤어요!']
+	['새로운 구독 설정'],
+	['내 구독 리스트','구독 취소'],
+	['이제 볼 일을 다 봤어요!'],
+	['봇 정보, 만든이']
 ]
 keyboard_generate = [
 	['강의게시판'],
@@ -11,17 +16,14 @@ keyboard_generate = [
 	['이전으로']
 ]
 keyboard_semester = [
-	['1학기'],
-	['여름학기'],
-	['2학기'],
-	['이전으로'],
+	['1학기','여름학기','2학기'],
+	['이전으로','처음으로']
 ]
 keyboard_grade = [
-	['학부 1학년'],
-	['학부 2학년'],
-	['학부 3학년'],
-	['학부 4학년'],
-	['석사/박사과정']
+	['1학년','2학년'],
+	['3학년','4학년'],
+	['석사/박사과정'],
+	['처음으로']
 ]
 
 keyboard_under_1_1 = sorted([[x] for x in lecturelist_under_1_1.keys()])
