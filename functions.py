@@ -15,7 +15,9 @@ from lecturelists import *
 MainMenu, Generate, Lecture, Semester, Lecture_1, Lecture_2, Subscribe, Remove = range(8)
 year = 2017
 
-def start(bot, update):
+import os
+
+def start(bot, update, user_data):
 	update.message.reply_text(
 		'안녕하세요! 서울대 물리학과 게시판 염탐꾼, 샤인만입니다.\n\n'
 		'소식을 받고 싶은 공지/강의게시판을 "새로운 구독 설정"으로 설정해 주세요.'
@@ -24,6 +26,17 @@ def start(bot, update):
 		'그 후 구독한 게시판에 새로운 글이 올라올 때마다 여기로 메시지가 옵니다.',
 		reply_markup=ReplyKeyboardMarkup(keyboard_main, one_time_keyboard=True)
 	)
+
+	user_id = str(update.message.chat_id)
+
+	if(os.path.exists('data/user/%s.txt' % user_id)):
+		with open('data/user/%s.txt' % user_id, 'r') as f:
+			user_data['feed'] = f.read().split(',')[1:] # .,first,second,third
+	else:
+		user_data['feed'] = []
+		with open('data/user/%s.txt' % user_id, 'w') as f:
+			f.write('.')
+
 	return MainMenu
 
 
@@ -36,15 +49,28 @@ def generate_feed(bot, update):
 
 
 def notice(bot, update, user_data):
-	if 'feed' not in user_data:
-		user_data['feed'] = []
+	user_id = str(update.message.chat_id)
 
-	user_data['feed'] += ['notice']
-	update.message.reply_text(
-		'"학부 공지사항" 게시판이 구독되었습니다.\n'
-		'원문은 여기에서 보실 수 있습니다 : \n\n'
-		'phya.snu.ac.kr/xe/underbbs'
-	)
+	if 'notice' in user_data['feed']:
+		update.message.reply_text(
+			'"학부 공지사항"은 이미 구독되어 있는 게시판입니다.'
+		)
+	else:
+		with open('data/user/%s.txt' % user_id, 'a') as f:
+			f.write(',%s' % 'notice')
+
+		user_data['feed'] += ['notice']
+		with open('data/course/notice.txt', 'r') as f:
+			temp = f.read().split(',')
+		if user_id not in temp: # to avoid duplication
+			with open('data/course/notice.txt', 'a') as f:
+				f.write(',%s' % user_id)
+
+		update.message.reply_text(
+			'"학부 공지사항" 게시판이 구독되었습니다.\n'
+			'원문은 여기에서 보실 수 있습니다 : \n\n'
+			'phya.snu.ac.kr/xe/underbbs'
+		)
 	return generate_feed(bot, update)
 
 
@@ -61,22 +87,33 @@ def semester(bot, update):
 def subscribe(bot, update, user_data):
 	text = update.message.text
 	lectureCode = lecturelist_all[text]
-	if 'feed' not in user_data:
-		user_data['feed'] = []
+	user_id = str(update.message.chat_id)
 
-	user_data['feed'] += [lectureCode]
-	update.message.reply_text(
-		'"%s"의 과목 게시판이 구독되었습니다.\n'
-		'원문은 여기에서 보실 수 있습니다 : \n\n'
-		'phya.snu.ac.kr/php/subject_list/Notice/list.php?id=%d_%s' % (text, year, lecturelist_all[text])
-	)
+	if lectureCode in user_data['feed']:
+		update.message.reply_text(
+			'"%s"은 이미 구독되어 있는 과목 게시판입니다.' % text
+		)
+	else:
+		with open('data/user/%s.txt' % user_id, 'a') as f:
+			f.write(',%s' % lectureCode)
+
+		user_data['feed'] += [lectureCode]
+		with open('data/course/%s.txt' % lectureCode, 'r') as f:
+			temp = f.read().split(',')
+		if user_id not in temp: # to avoid duplication
+			with open('data/course/%s.txt' % lectureCode, 'a') as f:
+				f.write(',%s' % user_id)
+
+		update.message.reply_text(
+			'"%s"의 과목 게시판이 구독되었습니다.\n'
+			'원문은 여기에서 보실 수 있습니다 : \n\n'
+			'phya.snu.ac.kr/php/subject_list/Notice/list.php?id=%d_%s' % (text, year, lecturelist_all[text])
+		)
 	return semester(bot, update)
 
 
 def show_list(bot, update, user_data):
-	if('feed' not in user_data):
-		update.message.reply_text('현재 구독중인 공지/강의 게시판이 없습니다.')
-	elif len(user_data['feed']) == 0:
+	if len(user_data['feed']) == 0:
 		update.message.reply_text('현재 구독중인 공지/강의 게시판이 없습니다.')
 	else:
 		feed_list = []
@@ -94,16 +131,13 @@ def show_list(bot, update, user_data):
 			'%s' % ''.join(feed_list)
 		)
 		
-	return start(bot, update)
+	return start(bot, update, user_data)
 
 
 def remove_feed_select(bot, update, user_data):
-	if('feed' not in user_data):
+	if len(user_data['feed']) == 0:
 		update.message.reply_text('현재 구독중인 공지/강의 게시판이 없습니다.')
-		return start(bot, update)
-	elif len(user_data['feed']) == 0:
-		update.message.reply_text('현재 구독중인 공지/강의 게시판이 없습니다.')
-		return start(bot, update)
+		return start(bot, update, user_data)
 	else:
 		rm_keyboard = [[lecturelist_all_rev[x]] for x in user_data['feed']]
 		update.message.reply_text(
@@ -115,14 +149,26 @@ def remove_feed_select(bot, update, user_data):
 
 def remove_feed_remove(bot, update, user_data):
 	text = update.message.text
+	lectureCode = lecturelist_all[text]
+	user_id = str(update.message.chat_id)
+
 	user_data['feed'].remove(lecturelist_all[text])
+	with open('data/user/%s.txt' % user_id, 'w') as f:
+		f.write(','.join(['.'] + user_data['feed']))
+
+	with open('data/course/%s.txt' % lectureCode, 'r') as f:
+		temp = f.read().split(',')[1:]
+	temp.remove(user_id)
+	with open('data/course/%s.txt' % lectureCode, 'w') as f:
+		f.write(','.join(['.'] + temp))
+
 	update.message.reply_text(
 		'"%s"의 구독이 정상적으로 취소되었습니다.' % text
 	)
-	return start(bot, update)
+	return start(bot, update, user_data)
 
 
-def credits(bot, update):
+def credits(bot, update, user_data):
 	update.message.reply_text(
 		'서울대 물리학과 게시판 염탐꾼, 샤인만. (샤 + Feynman)\n\n'
 		'만든이 : 박승원(서울대학교 물리천문학부)\n'
@@ -130,7 +176,7 @@ def credits(bot, update):
 		'버그 제보 : github.com/seungwonpark/shaynman/issues\n\n'
 		'사용법 문의는 받지 않습니다.'
 	)
-	return start(bot, update)
+	return start(bot, update, user_data)
 
 
 def done(bot, update):

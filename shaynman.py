@@ -11,25 +11,26 @@ def main():
 	updater = Updater(bot_token)
 	dp = updater.dispatcher
 	conv_handler = ConversationHandler(
-		entry_points=[CommandHandler('start', start)],
+		entry_points=[CommandHandler('start', start, pass_user_data=True)],
+		# Performance issue : passing user data to start()
 		states={
 			MainMenu: [
 				RegexHandler('^새로운 구독 설정$', generate_feed),
 				RegexHandler('^내 구독 리스트$', show_list, pass_user_data=True),
 				RegexHandler('^구독 취소$', remove_feed_select, pass_user_data=True),
-				RegexHandler('^봇 정보, 만든이$', credits)
+				RegexHandler('^봇 정보, 만든이$', credits, pass_user_data=True)
 			],
 			Generate: [
 				RegexHandler('^학부공지사항$', notice, pass_user_data=True),
 				RegexHandler('^강의게시판$', semester),
-				RegexHandler('^이전으로$', start)
+				RegexHandler('^이전으로$', start, pass_user_data=True)
 			],
 			Semester: [
 				RegexHandler('^1학기$', lecture_1),
 				RegexHandler('^여름학기$', under_s),
 				RegexHandler('^2학기$', lecture_2),
 				RegexHandler('^이전으로$', generate_feed),
-				RegexHandler('^처음으로$', start)
+				RegexHandler('^처음으로$', start, pass_user_data=True)
 			],
 			Lecture_1: [
 				RegexHandler('^1학년$', under_1_1),
@@ -38,7 +39,7 @@ def main():
 				RegexHandler('^4학년$', under_1_4),
 				RegexHandler('^석사/박사과정$', grad_1),
 				RegexHandler('^이전으로$', lecture_1),
-				RegexHandler('^처음으로$', start)
+				RegexHandler('^처음으로$', start, pass_user_data=True)
 			],
 			Lecture_2: [
 				RegexHandler('^1학년$', under_2_1),
@@ -47,7 +48,7 @@ def main():
 				RegexHandler('^4학년$', under_2_4),
 				RegexHandler('^석사/박사과정$', grad_2),
 				RegexHandler('^이전으로$', lecture_2),
-				RegexHandler('^처음으로$', start)
+				RegexHandler('^처음으로$', start, pass_user_data=True)
 			],
 			Subscribe: [
 				MessageHandler(Filters.text, subscribe, pass_user_data=True)
