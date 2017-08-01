@@ -55,5 +55,4 @@ for x in lecturelist_all_rev.keys():
 
 			for user in user_list:
 				requests.get('https://api.telegram.org/bot%s/sendMessage?chat_id=%s&text=%s&parse_mode=Markdown' % (bot_token, user, message))
-				print(user, message)
 

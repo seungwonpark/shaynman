@@ -18,11 +18,11 @@ import os
 
 def start(bot, update, user_data):
 	update.message.reply_text(
-		'안녕하세요! 서울대 물리학과 게시판 염탐꾼, 샤인만입니다.\n\n'
-		'소식을 받고 싶은 공지/강의게시판을 "새로운 구독 설정"으로 설정해 주세요.'
-		'"내 구독 리스트"에서 현재의 구독한 게시판 리스트를 확인할 수 있으며, "구독 취소"를 통해 구독을 취소할 수 있습니다.\n\n'
-		'구독 설정을 마쳤다면 "이제 볼 일을 다 봤어요!"을 눌러 설정을 종료하세요.'
-		'그 후 구독한 게시판에 새로운 글이 올라올 때마다 여기로 메시지가 옵니다.',
+		'안녕하세요! 서울대 물리학과 게시판 염탐꾼, 샤인만입니다.',
+		# '소식을 받고 싶은 공지/강의게시판을 "새로운 구독 설정"으로 설정해 주세요.'
+		# '"내 구독 리스트"에서 현재의 구독한 게시판 리스트를 확인할 수 있으며, "구독 취소"를 통해 구독을 취소할 수 있습니다.\n\n'
+		# '구독 설정을 마쳤다면 "이제 볼 일을 다 봤어요!"을 눌러 설정을 종료하세요.'
+		# '그 후 구독한 게시판에 새로운 글이 올라올 때마다 여기로 메시지가 옵니다.',
 		reply_markup=ReplyKeyboardMarkup(keyboard_main, one_time_keyboard=True)
 	)
 
@@ -37,6 +37,15 @@ def start(bot, update, user_data):
 			f.write('.')
 
 	return MainMenu
+
+# def guide(bot, update):
+# 	update.message.reply_text(
+# 		'소식을 받고 싶은 공지/강의게시판을 "새로운 구독 설정"으로 설정해 주세요.'
+# 		'"내 구독 리스트"에서 현재의 구독한 게시판 리스트를 확인할 수 있으며, "구독 취소"를 통해 구독을 취소할 수 있습니다.\n\n'
+# 		'구독 설정을 마쳤다면 "이제 볼 일을 다 봤어요!"을 눌러 설정을 종료하세요.'
+# 		'그 후 구독한 게시판에 새로운 글이 올라올 때마다 여기로 메시지가 옵니다.',
+# 	)
+# 	return MainMenu
 
 
 def generate_feed(bot, update):
@@ -138,7 +147,7 @@ def remove_feed_select(bot, update, user_data):
 		update.message.reply_text('현재 구독중인 공지/강의 게시판이 없습니다.')
 		return start(bot, update, user_data)
 	else:
-		rm_keyboard = [[lecturelist_all_rev[x]] for x in user_data['feed']]
+		rm_keyboard = [[lecturelist_all_rev[x]] for x in user_data['feed']] + [['이전으로']]
 		update.message.reply_text(
 			'구독을 취소할 게시판을 선택해 주세요.',
 			reply_markup=ReplyKeyboardMarkup(rm_keyboard, one_time_keyboard=True)
@@ -148,6 +157,8 @@ def remove_feed_select(bot, update, user_data):
 
 def remove_feed_remove(bot, update, user_data):
 	text = update.message.text
+	if(text == '이전으로'):
+		return start(bot, update, user_data)
 	lectureCode = lecturelist_all[text]
 	user_id = str(update.message.chat_id)
 
@@ -169,11 +180,11 @@ def remove_feed_remove(bot, update, user_data):
 
 def credits(bot, update, user_data):
 	update.message.reply_text(
-		'서울대 물리학과 게시판 염탐꾼, 샤인만. (샤 + Feynman)\n\n'
+		'서울대 물리학과 게시판 알리미, 샤인만. (SNU + Feynman)\n\n'
 		'만든이 : 박승원(서울대학교 물리천문학부)\n'
-		'소스 링크 : github.com/seungwonpark/shaynman\n'
-		'버그 제보 : github.com/seungwonpark/shaynman/issues\n\n'
-		'사용법 문의는 받지 않습니다.'
+		'소스 : github.com/seungwonpark/shaynman\n'
+		'기능 제안 / 버그 제보 : git.io/v7RzM\n\n'
+		'사용법 문의는 받지 않습니다. 감사합니다.'
 	)
 	return start(bot, update, user_data)
 

@@ -11,10 +11,13 @@ def main():
 	updater = Updater(bot_token)
 	dp = updater.dispatcher
 	conv_handler = ConversationHandler(
-		entry_points=[CommandHandler('start', start, pass_user_data=True)],
-		# Performance issue : passing user data to start()
+		entry_points=
+			[CommandHandler('start', start, pass_user_data=True)],
+			# Performance issue : passing user data to start()
+			# [CommandHandler('help', guide)],
 		states={
 			MainMenu: [
+				CommandHandler('start', start, pass_user_data=True),
 				RegexHandler('^새로운 구독 설정$', generate_feed),
 				RegexHandler('^내 구독 리스트$', show_list, pass_user_data=True),
 				RegexHandler('^구독 취소$', remove_feed_select, pass_user_data=True),
