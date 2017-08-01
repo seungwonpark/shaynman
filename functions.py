@@ -13,7 +13,6 @@ from keyboards import *
 from lecturelists import *
 
 MainMenu, Generate, Lecture, Semester, Lecture_1, Lecture_2, Subscribe, Remove = range(8)
-year = 2017
 
 import os
 
@@ -61,7 +60,7 @@ def notice(bot, update, user_data):
 
 		user_data['feed'] += ['notice']
 		with open('data/course/notice.txt', 'r') as f:
-			temp = f.read().split(',')
+			temp = f.read().split(',')[1:]
 		if user_id not in temp: # to avoid duplication
 			with open('data/course/notice.txt', 'a') as f:
 				f.write(',%s' % user_id)
@@ -99,7 +98,7 @@ def subscribe(bot, update, user_data):
 
 		user_data['feed'] += [lectureCode]
 		with open('data/course/%s.txt' % lectureCode, 'r') as f:
-			temp = f.read().split(',')
+			temp = f.read().split(',')[1:]
 		if user_id not in temp: # to avoid duplication
 			with open('data/course/%s.txt' % lectureCode, 'a') as f:
 				f.write(',%s' % user_id)
