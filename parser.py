@@ -1,8 +1,9 @@
 from lecturelists import *
 import requests
 import re
-import os
-bot_token = os.environ["bot_token"]
+
+with open('token.txt', 'r') as f:
+	bot_token = f.read().replace('\n','')
 
 for x in ['notice']:
 	url = 'http://physics.snu.ac.kr/xe/underbbs'

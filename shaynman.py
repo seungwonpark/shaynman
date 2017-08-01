@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
 from functions import *
 
-# Safely use access token
-# execute as `bot_token="xoxb-abc-1232" python shaynman.py`
-import os
-bot_token = os.environ["bot_token"]
-
+with open('token.txt', 'r') as f:
+	bot_token = f.read().replace('\n','')
 
 def main():
 	updater = Updater(bot_token)
