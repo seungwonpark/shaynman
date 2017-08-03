@@ -63,7 +63,7 @@ def job():
 
 	print('Finished working...')
 
-schedule.every().minutes.do(job)
+schedule.every(10).minutes.do(job)
 
 while True:
 	schedule.run_pending()
