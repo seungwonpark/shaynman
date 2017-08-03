@@ -18,7 +18,7 @@ def main():
 				RegexHandler('^새로운 구독 설정$', generate_feed),
 				RegexHandler('^내 구독 리스트$', show_list, pass_user_data=True),
 				RegexHandler('^구독 취소$', remove_feed_select, pass_user_data=True),
-				RegexHandler('^봇 정보, 만든이$', credits, pass_user_data=True)
+				RegexHandler('^봇 정보, 만든이$', credits, pass_user_data=True),
 				RegexHandler('^면책 조항$', disclaimer, pass_user_data=True)
 			],
 			Generate: [

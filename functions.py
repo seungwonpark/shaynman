@@ -188,6 +188,7 @@ def credits(bot, update, user_data):
 	)
 	return start(bot, update, user_data)
 
+
 def disclaimer(bot, update, user_data):
 	update.message.reply_text(
 		'면책 조항:\n'
@@ -196,6 +197,7 @@ def disclaimer(bot, update, user_data):
 		'봇 제작자/서비스 제공자는 어떠한 책임도 지지 않습니다.'
 	)
 	return start(bot, update, user_data)
+
 
 def done(bot, update):
 	update.message.reply_text(
