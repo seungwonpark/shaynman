@@ -63,6 +63,8 @@ def job():
 
 	print('Finished working...')
 
+
+job() # do job at first
 schedule.every(10).minutes.do(job)
 
 while True:
