@@ -18,8 +18,8 @@ nano token.txt
 (YOUR_BOT_TOKEN)
 ^X - Y - ENTER
 python3 initialize.py
-nohup `python3 shaynman.py` & # Should be operating on background
-nohup `python3 parser.py` & # Should be operating on background
+nohup python3 shaynman.py & # Should be operating on background
+nohup python3 parser.py & # Should be operating on background
 ```
 
 ## License
