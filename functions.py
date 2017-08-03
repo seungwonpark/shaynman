@@ -61,7 +61,7 @@ def notice(bot, update, user_data):
 
 	if 'notice' in user_data['feed']:
 		update.message.reply_text(
-			'"학부 공지사항"은 이미 구독되어 있는 게시판입니다.'
+			'"학부 게시판"은 이미 구독되어 있는 게시판입니다.'
 		)
 	else:
 		with open('data/user/%s.txt' % user_id, 'a') as f:
@@ -75,7 +75,7 @@ def notice(bot, update, user_data):
 				f.write(',%s' % user_id)
 
 		update.message.reply_text(
-			'"학부 공지사항" 게시판이 구독되었습니다.\n'
+			'"학부 게시판"이 구독되었습니다.\n'
 			'원문은 여기에서 보실 수 있습니다 : \n\n'
 			'phya.snu.ac.kr/xe/underbbs'
 		)
