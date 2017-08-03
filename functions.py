@@ -192,9 +192,9 @@ def credits(bot, update, user_data):
 def disclaimer(bot, update, user_data):
 	update.message.reply_text(
 		'면책 조항:\n'
-		'이 봇은 서울대 물리천문학부의 공식적인 입장을 대변하지 않으며,'
-		'봇의 중단/오작동으로 인해 발생할 수 있는 피해에 대해'
-		'봇 제작자/서비스 제공자는 어떠한 책임도 지지 않습니다.'
+		'이 봇은 서울대 물리천문학부의 공식적인 입장을 대변하지 않으며, '
+		'봇의 중단/오작동으로 인해 발생할 수 있는 피해에 대해 '
+		'봇 제작자와 서비스 제공자는 어떠한 책임도 지지 않습니다.'
 	)
 	return start(bot, update, user_data)
 
