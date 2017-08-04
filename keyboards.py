@@ -23,7 +23,7 @@ keyboard_grade = [
 	['1학년','2학년'],
 	['3학년','4학년'],
 	['석사/박사과정'],
-	['처음으로']
+	['이전으로','처음으로']
 ]
 
 keyboard_under_1_1 = sorted([[x] for x in lecturelist_under_1_1.keys()])

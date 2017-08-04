@@ -94,6 +94,12 @@ def semester(bot, update):
 
 def subscribe(bot, update, user_data):
 	text = update.message.text
+	if text not in lecturelist_all.keys():
+		update.message.reply_text(
+			'"%s"는 없는 과목입니다.' % text
+		)
+		return semester(bot, update)
+
 	lectureCode = lecturelist_all[text]
 	user_id = str(update.message.chat_id)
 
@@ -159,8 +165,27 @@ def remove_feed_remove(bot, update, user_data):
 	text = update.message.text
 	if(text == '이전으로'):
 		return start(bot, update, user_data)
+
+	if text not in lecturelist_all.keys():
+		update.message.reply_text(
+			'"%s"는 없는 과목입니다. 다시 선택해 주세요.' % text
+		)
+		return remove_feed_select(bot, update, user_data)
+
 	lectureCode = lecturelist_all[text]
 	user_id = str(update.message.chat_id)
+
+	isNotsubscribed = False
+	with open('data/user/%s.txt' % user_id, 'r') as f:
+		temp = f.read().split(',')[1:]
+		if lectureCode not in temp:
+			update.message.reply_text(
+				'"%s"는 구독되어 있는 과목이 아닙니다. 다시 선택해 주세요.' % text
+			)
+			isNotsubscribed = True
+
+	if isNotsubscribed:
+		return remove_feed_select(bot, update, user_data)
 
 	user_data['feed'].remove(lecturelist_all[text])
 	with open('data/user/%s.txt' % user_id, 'w') as f:
