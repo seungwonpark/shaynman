@@ -41,7 +41,7 @@ def main():
 				RegexHandler('^3학년$', under_1_3),
 				RegexHandler('^4학년$', under_1_4),
 				RegexHandler('^석사/박사과정$', grad_1),
-				RegexHandler('^이전으로$', lecture_1),
+				RegexHandler('^이전으로$', semester),
 				RegexHandler('^처음으로$', start, pass_user_data=True),
 				RegexHandler('^.*$', start, pass_user_data=True)
 			],
@@ -51,7 +51,7 @@ def main():
 				RegexHandler('^3학년$', under_2_3),
 				RegexHandler('^4학년$', under_2_4),
 				RegexHandler('^석사/박사과정$', grad_2),
-				RegexHandler('^이전으로$', lecture_2),
+				RegexHandler('^이전으로$', semester),
 				RegexHandler('^처음으로$', start, pass_user_data=True),
 				RegexHandler('^.*$', start, pass_user_data=True)
 			],
