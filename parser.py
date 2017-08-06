@@ -8,7 +8,7 @@ with open('token.txt', 'r') as f:
 	bot_token = f.read().replace('\n','')
 
 def job():
-	print('Started Working...')
+	print('Started Working... %s' % time.asctime())
 	for x in ['notice']:
 		url = 'http://physics.snu.ac.kr/xe/underbbs'
 		req = requests.get(url)
