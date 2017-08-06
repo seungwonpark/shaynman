@@ -18,8 +18,12 @@ nano token.txt
 (YOUR_BOT_TOKEN)
 ^X - Y - ENTER
 python3 initialize.py
-nohup python3 shaynman.py > /dev/null 2>&1 &
-nohup python3 parser.py > /dev/null 2>&1 &
+screen
+python3 shaynman.py
+^A D
+screen
+python3 parser.py
+^A D
 ```
 
 ## License
