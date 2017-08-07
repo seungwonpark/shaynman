@@ -7,6 +7,20 @@ import time
 with open('token.txt', 'r') as f:
 	bot_token = f.read().replace('\n','')
 
+with open('secret.txt', 'r') as f:
+	err_bot_token, admin_no = f.read().replace('\n','').split(',')
+
+def handler():
+	try:
+		job()
+	except Exception as e: #ConnectionRefusedError, NewConnectionError, MaxRetryError, ConnectionError
+		print('\t' + time.asctime() + ' -- ' + e.__class__.__name__)
+		time.sleep(10)
+		try:
+			requests.get('https://api.telegram.org/bot%s/sendMessage?chat_id=%s&text=%s' % (err_bot_token, admin_no, e.__class__.__name__))
+		except Exception:
+			pass
+
 def job():
 	print('Started Working... %s' % time.asctime())
 	for x in ['notice']:
@@ -64,8 +78,8 @@ def job():
 	print('Finished working...')
 
 
-job() # do job at first
-schedule.every(1).minutes.do(job)
+handler()
+schedule.every(1).minutes.do(handler)
 
 while True:
 	schedule.run_pending()

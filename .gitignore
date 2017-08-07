@@ -3,3 +3,4 @@ data/*
 token.txt
 nohup.out
 log.txt
+secret.txt
