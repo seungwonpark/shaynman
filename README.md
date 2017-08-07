@@ -17,6 +17,9 @@ cd shaynman
 nano token.txt
 (YOUR_BOT_TOKEN)
 ^X - Y - ENTER
+nano secret.txt
+(BOT_TOKEN_TO_SEND_ERROR_MESSAGE),(YOUR_TELEGRAM_CHAT_ID_NUMBER)
+^X - Y - ENTER
 python3 initialize.py
 screen
 python3 shaynman.py
